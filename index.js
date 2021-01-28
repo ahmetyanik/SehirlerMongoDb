@@ -26,7 +26,7 @@ var bolgeler = new Schema(
 );
 
 var Bolge = mongoose.model("Bolge",bolgeler);
-
+var bolgeAdlari = [];
 
 
 app.get("/", function(req,res){
@@ -40,7 +40,7 @@ console.log(ilAdi);
 
   Bolge.find({},function(err, gelenVeriler){
 
-    var bolgeAdlari = [];
+
 
 
   for(var i=0;i<gelenVeriler.length;i++){
@@ -105,7 +105,8 @@ app.post("/ekle", function(req,res){
 
 
 
-      res.render("bolge",{bolge:gelenBolgeler});
+      res.render("bolge",{bolge:gelenBolgeler,
+                          bolgeAdlari:bolgeAdlari});
     });
 
 
@@ -142,7 +143,8 @@ app.post("/ekle", function(req,res){
 
 
       res.render("sehir",{sehir:gelenSehir,
-                          sehirHava:havaDurumu});
+                          sehirHava:havaDurumu,
+                          bolgeAdlari:bolgeAdlari});
     });
 
 
