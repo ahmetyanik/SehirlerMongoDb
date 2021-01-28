@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.js" charset="utf-8"></script>
+  </head>
+  <body>
+<%-include("header")-%>
+
+
+    <div class="container mt-3 shadow">
+
+      <div class="row">
+
+
+
+        <div class="col-5">
+          <h3><%=bolge[0].bolgeAdi%> Bölgesi</h3>
+          <img style="width:22rem" class="mb-2" src="/resimler/<%=bolge[0].resimlinki%>.png" alt="">
+
+
+
+        </div>
+
+        <div class="col-7 d-flex flex-wrap">
+
+        <%  for(var i=0;i<bolge.length;i++){ %>
+
+          <div class=" ml-2 mt-2" >
+              <a href="/bolgeler/<%=bolge[i].bolgeAdi%>/<%=bolge[i].ilAdi%>" class="btn btn-primary"> <%=bolge[i].ilAdi%></a>
+            </div>
+
+
+
+
+        <%  } %>
+
+  </div>
+
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+
+
+  </body>
+</html>
