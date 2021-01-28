@@ -22,7 +22,6 @@ var bolgeler = new Schema(
     resimlinki:String
 
 
-
   }
 );
 
