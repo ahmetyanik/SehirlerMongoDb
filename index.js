@@ -146,15 +146,56 @@ app.post("/ekle", function(req,res){
                           sehirHava:havaDurumu,
                           bolgeAdlari:bolgeAdlari});
     });
+  });
+  });
+  });
 
+  app.get("/arama", function(req,res){
+
+    var aranan = (req.query.arananKonum).substring(0,1).toUpperCase()+(req.query.arananKonum).substring(1).toLowerCase();
+
+    var link = "https://api.openweathermap.org/data/2.5/weather?q="+aranan+"&appid=a7ccf39f58624360e151dce17c818ef3";
+
+    https.get(link, function(response){
+
+      console.log("statusCode: ", response.statusCode);
+
+      response.on("data", function(gelenData){
+
+        console.log(gelenData);
+
+        var havaDurumu = JSON.parse(gelenData);
+
+
+
+        console.log(havaDurumu);
+
+
+
+
+
+
+    Bolge.find({ilAdi:aranan},function(err,gelenSehir){
+
+      if(gelenSehir.length==0){
+        res.send("Aradiginiz sehir bulunamadi!");
+      }else{
+
+        res.render("sehir",{sehir:gelenSehir,
+                            sehirHava:havaDurumu,
+                            bolgeAdlari:bolgeAdlari});
+
+      }
+
+
+
+    });
 
   });
 
-  });
+});
 
-  });
-
-
+});
 
 
 
