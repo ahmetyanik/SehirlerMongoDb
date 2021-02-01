@@ -1,9 +1,20 @@
+const multer = require("multer");
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/dosyalar/resimler')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+  }
+});
+var upload = multer({ storage: storage });
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded( {extended : true} ));
 app.use(express.static(__dirname + "/dosyalar"));
+app.use(bodyParser.json());
 const mongoose=require("mongoose");
 const Schema = mongoose.Schema;
 const https      = require("https");
@@ -27,6 +38,8 @@ var bolgeler = new Schema(
 
 var Bolge = mongoose.model("Bolge",bolgeler);
 var bolgeAdlari = [];
+
+
 
 
 app.get("/", function(req,res){
@@ -62,7 +75,12 @@ console.log(ilAdi);
 
 });
 
-app.post("/ekle", function(req,res){
+app.post("/ekle", upload.single('dosya')  , function(req,res){
+
+  var resimlinki = "";
+  if(req.file){
+    resimlinki = "/resimler/"+(req.file.filename).toLowerCase();
+  }
 
   var bolgeAdi= req.body.bolgeAdi;
   var ilAdi = req.body.ilAdi;
@@ -71,7 +89,12 @@ app.post("/ekle", function(req,res){
   var bolgeAdi= req.body.bolgeAdi;
   var ilceSayisi = req.body.ilceSayisi;
   var ilceAdi=req.body.ilceAdi;
-  var resimlinki=req.body.resimlinki;
+  var resimlinki=bolgeAdi;
+
+
+
+  console.log("resimlinki:" +resimlinki);
+  console.log("ilAdi: "+ilAdi);
 
   console.log("----------------------");
   var il = new Bolge(
@@ -90,7 +113,7 @@ app.post("/ekle", function(req,res){
 
   il.save(function(err){
 
-    res.redirect("anasayfa");
+    res.redirect("/");
   });
 
 
@@ -99,11 +122,11 @@ app.post("/ekle", function(req,res){
   app.get("/bolgeler/:bolgeAdi", function(req,res){
 
     var bolge = req.params.bolgeAdi;
-    console.log(bolge);
+
 
     Bolge.find({bolgeAdi:bolge},function(err,gelenBolgeler){
 
-
+console.log(gelenBolgeler);
 
       res.render("bolge",{bolge:gelenBolgeler,
                           bolgeAdlari:bolgeAdlari});
@@ -187,8 +210,6 @@ app.post("/ekle", function(req,res){
 
       }
 
-
-
     });
 
   });
@@ -197,6 +218,12 @@ app.post("/ekle", function(req,res){
 
 });
 
+
+
+app.get("/api/sehirekle",function(req,res){
+
+    res.sendFile(__dirname + "/views/sehirekle.html");
+});
 
 
 
